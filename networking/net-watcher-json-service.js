@@ -1,5 +1,4 @@
 'use strict';
-
 const fs = require('fs');
 const net = require('net');
 const filename = process.argv[2];
@@ -10,7 +9,7 @@ if(!filename) {
 
 net.createServer(connection => {
   console.log('Subscriber connected.');
-  connection.write(`Now watching "${filename}" for changes...`);
+  connection.write(JSON.stringify({type: 'watching', file: filename}) + '\n');
 
   const watcher = fs.watch(filename, () => connection.write(
     JSON.stringify({type: 'changed', timestamp: Date.now()}) + '\n'));
